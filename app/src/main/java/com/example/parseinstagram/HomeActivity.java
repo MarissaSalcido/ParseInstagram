@@ -1,7 +1,11 @@
 package com.example.parseinstagram;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,6 +15,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.parseinstagram.fragments.ComposeFragment;
+import com.example.parseinstagram.fragments.PostsFragment;
+import com.example.parseinstagram.fragments.ProfileFragment;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.FindCallback;
@@ -29,69 +36,43 @@ import okhttp3.Headers;
 public class HomeActivity extends AppCompatActivity {
 
     public static final String TAG = "HomeActivity";
-    RecyclerView rvPosts;
-    List<Post> posts;
-    PostAdapter adapter;
-    BottomAppBar bottomAppBar;
+    final FragmentManager fm = getSupportFragmentManager();
+
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        bottomNavigationView = findViewById(R.id.bottomNavigation);
 
-        rvPosts = findViewById(R.id.rvPosts);
-        posts = new ArrayList<>();
-        adapter = new PostAdapter(this, posts);
-        LinearLayoutManager layoutManager = new LinearLayoutManager((this));
-        rvPosts.setLayoutManager(layoutManager);
-        rvPosts.setAdapter(adapter);
-
-        queryPosts();
-
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.navigation, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.logOut) {
-            ParseUser.logOut();
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            return true;
-        }
-        if (item.getItemId() == R.id.takePicture){
-            Intent i = new Intent(this, NewPostActivity.class);
-            startActivity(i);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void queryPosts() {
-        ParseQuery<Post> postQuery = new ParseQuery<Post>(Post.class);
-        postQuery.include(Post.KEY_USER);
-        postQuery.findInBackground(new FindCallback<Post>() {
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void done(List<Post> posts, ParseException e) {
-                if(e != null){
-                    Log.e(TAG, "Error with query");
-                    e.printStackTrace();
-                    return;
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment fragment;
+                switch (item.getItemId()) {
+                    case R.id.menu_home:
+                        fragment = new PostsFragment();
+                        break;
+                    case R.id.action_compose:
+                        fragment = new ComposeFragment();
+                        break;
+                    case R.id.actionLogOut:
+                        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                        ParseUser.logOut();
+                        startActivity(intent);
+                        return true;
+                    case R.id.action_profile:
+                    default:
+                        fragment = new ProfileFragment();
+                        break;
                 }
-                adapter.clear();
-                adapter.addAll(posts);
+                fm.beginTransaction().replace(R.id.flContainer, fragment).commit();
+                return true;
             }
         });
+        bottomNavigationView.setSelectedItemId(R.id.menu_home);
+
     }
 }

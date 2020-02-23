@@ -1,8 +1,6 @@
 package com.example.parseinstagram;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.parse.GetDataCallback;
-import com.parse.ParseException;
+
+import com.bumptech.glide.Glide;
+import com.parse.ParseFile;
 
 import java.util.List;
 
@@ -72,12 +71,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public void bind(Post post){
             etUsernameDisplay.setText(post.getUser().getUsername());
             etDescriptionDisplay.setText(post.getDescription());
-            try {
-                byte[] image = post.getImage().getData();
-                Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
-                ivPost.setImageBitmap(bitmap);
-            } catch (ParseException e) {
-                e.printStackTrace();
+            ParseFile image= post.getImage();
+            if (image != null){
+                Glide.with(context).load(image.getUrl()).into(ivPost);
             }
         }
     }
