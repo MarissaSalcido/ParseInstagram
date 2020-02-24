@@ -14,9 +14,9 @@ The following **required** functionality is completed:
 
 The following **optional** features are implemented:
 
-- [ ] Style the feed to look like the real Instagram feed.
+- [X] Style the feed to look like the real Instagram feed.
 - [ ] User can load more posts once he or she reaches the bottom of the feed using infinite scrolling.
-- [ ] Show the username and creation time for each post.
+- [X] Show the username and creation time for each post.
 - [ ] User can tap a post to view post details, including timestamp and caption.
 - [ ] User Profiles
       - [ ] Allow the logged in user to add a profile photo
@@ -34,7 +34,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://i.imgur.com/JWPANrp.mp4' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
