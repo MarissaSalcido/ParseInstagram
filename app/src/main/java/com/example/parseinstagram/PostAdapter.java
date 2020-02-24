@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.parse.ParseFile;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
@@ -60,17 +62,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         ImageView ivPost;
         TextView etUsernameDisplay;
         TextView etDescriptionDisplay;
+        TextView etCreatedAt;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivPost = itemView.findViewById(R.id.ivPost);
             etDescriptionDisplay = itemView.findViewById(R.id.etDescriptionDisplay);
             etUsernameDisplay= itemView.findViewById(R.id.etUsernameDisplay);
+            etCreatedAt = itemView.findViewById(R.id.etCreatedAt);
         }
 
         public void bind(Post post){
             etUsernameDisplay.setText(post.getUser().getUsername());
             etDescriptionDisplay.setText(post.getDescription());
+            etCreatedAt.setText(post.getCreatedAt().toString());
             ParseFile image= post.getImage();
             if (image != null){
                 Glide.with(context).load(image.getUrl()).into(ivPost);

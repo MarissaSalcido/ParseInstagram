@@ -26,7 +26,7 @@ public class ProfileFragment extends PostsFragment {
                     e.printStackTrace();
                     return;
                 }
-                posts.addAll(posts);
+                adapter.addAll(posts);
                 adapter.notifyDataSetChanged();
             }
         });

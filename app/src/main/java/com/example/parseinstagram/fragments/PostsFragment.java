@@ -75,7 +75,7 @@ public class PostsFragment extends Fragment {
                     e.printStackTrace();
                     return;
                 }
-                posts.addAll(posts);
+                adapter.addAll(posts);
                 adapter.notifyDataSetChanged();
             }
         });
